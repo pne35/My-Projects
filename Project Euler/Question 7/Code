@@ -1,0 +1,25 @@
+def is_prime(num):
+    """Check if a number is prime."""
+    if num < 2:
+        return False
+    for i in range(2, int(num**0.5) + 1):
+        if num % i == 0:
+            return False
+    return True
+
+def find_nth_prime(n):
+    """Find the nth prime number."""
+    count = 0  # Counter for primes found
+    candidate = 1  # Current number to check for primality
+
+    while count < n:
+        candidate += 1
+        if is_prime(candidate):
+            count += 1
+
+    return candidate
+
+# Find the 10001st prime number
+nth_prime = 10001
+result = find_nth_prime(nth_prime)
+print(f"The {nth_prime}th prime number is: {result}")
