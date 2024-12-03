@@ -1,0 +1,21 @@
+def palindrome():
+    highest = 0
+    multiples = [0,0]
+    for count in range(10,25):
+        for sec in range(10,25):
+            if is_palindrome(count * sec):
+                if count * sec > highest:
+                    highest = count * sec
+                    multiples[0] = count
+                    multiples[1] = sec
+                    
+    return highest, multiples
+
+def is_palindrome(num):
+    ns = str(num)
+    if ns[::-1] == ns:
+        return True
+        
+print(palindrome())
+print(is_palindrome(909))
+print("palindrome"[::-1])
