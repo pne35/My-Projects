@@ -1,0 +1,22 @@
+def isPrime(num):
+    if num <= 1:
+        return False
+    for i in range(2, int(num**0.5) + 1):
+        if num % i == 0:
+            return False
+    return True
+
+primes = []
+found = False
+count = 0
+total = 0
+
+while not found:
+    count += 1
+    if count == 2000000:
+        found = True
+    elif isPrime(count):
+        primes.append(count)
+        total += count
+
+print(primes, total)
