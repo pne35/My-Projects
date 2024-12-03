@@ -1,0 +1,19 @@
+def square():
+    total = 0
+    
+    for count in range(1,101):
+        total += count **2
+        
+    return total
+        
+def sumSquare():
+    total = 0
+    
+    for count in range(1, 101):
+        total += count
+        
+    total = total ** 2
+        
+    return total
+
+print(sumSquare()-square())
