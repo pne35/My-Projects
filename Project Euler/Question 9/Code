@@ -1,0 +1,17 @@
+def find():
+    found = [0,0,0]
+    for a in range(1,1000):
+        for b in range(1,1000):
+            c = (((a ** 2) + (b ** 2)) ** 0.5)
+            if c % 1 == 0:
+                found[0] = a
+                found[1] = b
+                found[2] = c
+                print("When a =", found[0], "and b =", found[1],  "then c =", int(found[2]), "The product of these is", int(found[0] * found[1] * found[2]))
+            if a + b + c == 1000:
+                print(found[0] * found[1] * found[2])
+                return found
+            
+
+
+print(find())
