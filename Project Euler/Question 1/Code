@@ -1,0 +1,9 @@
+num = 0
+
+for count in range(1000):
+    if count % 3 == 0:
+        num += count
+    elif count % 5 == 0:
+        num += count
+        
+print(num)
