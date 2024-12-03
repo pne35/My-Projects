@@ -1,0 +1,16 @@
+def smallest():
+    t = True
+    n = 0
+    while t:
+        n += 20
+        if is_multiple(n):
+            t = False
+    return n
+    
+def is_multiple(num):
+    for count in range(1,20):
+        if num % count != 0:
+            return False
+    return True
+        
+print(smallest())
