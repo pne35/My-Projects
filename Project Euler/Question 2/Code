@@ -1,0 +1,18 @@
+digit = 2  # Current Fibonacci term (starting with the second term)
+ld = 1     # Previous Fibonacci term
+t = 0      # Sum of even-valued terms
+
+found = False
+
+while not found:
+    if digit >= 4000000:
+        found = True
+    else:
+        if digit % 2 == 0:  # Check if the term is even
+            t += digit
+        od = digit          # Save the current term as the old term
+        digit += ld         # Calculate the next Fibonacci term
+        ld = od             # Update the previous term
+        print(digit, ld, od)  # Debugging information
+
+print("Sum of even-valued terms:", t)
