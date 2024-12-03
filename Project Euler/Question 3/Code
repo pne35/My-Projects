@@ -1,0 +1,30 @@
+def isPrime(num):
+    if num <= 1:
+        return False
+    for i in range(2, int(num**0.5) + 1):
+        if num % i == 0:
+            return False
+    return True
+
+def prime_factors(n):
+    factors = []
+    # Check for number of 2s in n
+    while n % 2 == 0:
+        factors.append(2)
+        n = n // 2
+    
+    # n must be odd at this point, so a skip of 2 (i.e., 3, 5, 7, ...)
+    for i in range(3, int(n**0.5) + 1, 2):
+        while n % i == 0:
+            factors.append(i)
+            n = n // i
+    
+    # This condition is to check if n is a prime number greater than 2
+    if n > 2:
+        factors.append(n)
+    
+    return factors
+
+# Example usage
+num = 600851475143 
+print("Prime factors of", num, "are:", prime_factors(num))
