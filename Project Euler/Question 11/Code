@@ -1,0 +1,62 @@
+def read_numbers_from_file(file_path):
+    numbers = []
+    with open(file_path, 'r') as file:
+        for line in file:
+            # Split the line into individual numbers based on whitespace
+            numbers_in_line = line.split()
+            # Convert each number from string to integer and add to the list
+            numbers.extend([int(num) for num in numbers_in_line])
+    return numbers
+
+# Example usage
+file_path = 'grid.txt'
+numbers = read_numbers_from_file(file_path)
+
+def right(numbers):
+    max_product = 0
+    for count in range(397):  # Only go up to the 397th number (last row excluded)
+        product = numbers[count] * numbers[count + 1] * numbers[count + 2] * numbers[count + 3]
+        if product > max_product:
+            max_product = product
+    return max_product
+
+def down(numbers):
+    max_product = 0
+    for count in range(340):  # Only go up to the 340th number (last 3 rows excluded)
+        product = numbers[count] * numbers[count + 20] * numbers[count + 40] * numbers[count + 60]
+        if product > max_product:
+            max_product = product
+    return max_product
+
+def rd(numbers):
+    max_product = 0
+    for count in range(337):  # Up to 337th (accounting for rows and columns)
+        if count % 20 <= 16:  # Prevent overflow across rows
+            product = numbers[count] * numbers[count + 21] * numbers[count + 42] * numbers[count + 63]
+            if product > max_product:
+                max_product = product
+    return max_product
+
+def ld(numbers):
+    max_product = 0
+    for count in range(337):  # Up to 337th (accounting for rows and columns)
+        if count % 20 >= 3:  # Prevent overflow across rows
+            product = numbers[count] * numbers[count + 19] * numbers[count + 38] * numbers[count + 57]
+            if product > max_product:
+                max_product = product
+    return max_product
+
+# Find the maximum product from all directions
+max_product = max(
+    right(numbers),
+    down(numbers),
+    rd(numbers),
+    ld(numbers)
+)
+
+print(right(numbers),
+    down(numbers),
+    rd(numbers),
+    ld(numbers))
+
+print("The largest product of 4 adjacent numbers is:", max_product)
