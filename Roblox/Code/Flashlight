@@ -1,0 +1,98 @@
+local cam = workspace.CurrentCamera
+local replicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+local flashlight = replicatedStorage:WaitForChild("Flashlight")
+local campfireDetection = replicatedStorage:WaitForChild("CampfireEnterDetection")
+
+local Mouse = game.Players.LocalPlayer:GetMouse()
+
+local TweenService = game:GetService("TweenService")
+local tweenInfo = TweenInfo.new(0.1, Enum.EasingStyle.Sine)
+local UserInputService = game:GetService("UserInputService")
+
+local pressed = false
+local clone = nil
+local scaryGuy = workspace:WaitForChild("ScaryGuy")
+local endPos = Vector3.new(-80.375, 0, 74.755)
+
+local canToggle = true
+local debounceTime = 0.35  -- Adjust the debounce time as needed
+local lastToggleTime = 0
+
+-- Ensure that ScaryGuy has a PrimaryPart set in the model
+if not scaryGuy.PrimaryPart then
+	scaryGuy.PrimaryPart = scaryGuy:FindFirstChild("HumanoidRootPart") or scaryGuy:FindFirstChildWhichIsA("BasePart")
+end
+
+-- Function to toggle the flashlight
+local function toggleFlashlight(state)
+	if canToggle then
+		pressed = state
+
+		if pressed then
+			if not clone then
+				clone = flashlight:Clone()
+				clone.Parent = script.Parent
+			end
+		else
+			if clone then
+				clone:Destroy()
+				clone = nil
+			end
+		end 
+	end	
+end
+
+local function onMouseButtonPress(input, gameProcessedEvent)
+	if (input.UserInputType == Enum.UserInputType.MouseButton2) or 
+		(input.UserInputType == Enum.UserInputType.Gamepad1 and input.KeyCode == Enum.KeyCode.ButtonR2) then
+
+		local currentTime = tick()  -- Get the current time
+		if currentTime - lastToggleTime > debounceTime then
+			toggleFlashlight(not pressed)
+			lastToggleTime = currentTime  -- Update the last toggle time
+		end
+	end
+end
+
+-- Update flashlight position and orientation
+RunService.RenderStepped:Connect(function()
+	if clone and pressed then
+		clone.Position = cam.CFrame.Position
+
+		-- Create a CFrame to look at the mouse position
+		if Mouse.Hit then
+			local lookAtCFrame = CFrame.lookAt(clone.Position, Mouse.Hit.Position)
+			local tween = TweenService:Create(clone, tweenInfo, {CFrame = lookAtCFrame})
+			tween:Play()
+		end
+	end
+end)
+
+-- Connect the mouse button press handler
+UserInputService.InputBegan:Connect(onMouseButtonPress)
+
+-- Handle campfire detection event
+campfireDetection.OnClientEvent:Connect(function()
+	if scaryGuy.PrimaryPart then
+		scaryGuy:SetPrimaryPartCFrame(CFrame.new(-82.227, 16.636, 72.069) * CFrame.Angles(0, math.rad(-142.502), 0))
+		wait(1)
+		toggleFlashlight(true)
+		wait(2)
+		toggleFlashlight(false)
+		wait(0.1)
+		toggleFlashlight(true)
+		wait(0.5)
+		toggleFlashlight(false)
+		wait(0.1)
+		toggleFlashlight(true)
+		wait(0.5)
+		toggleFlashlight(false)
+		scaryGuy:SetPrimaryPartCFrame(CFrame.new(endPos))
+		canToggle = false
+		wait(2)
+		canToggle = true
+	else
+		warn("ScaryGuy does not have a PrimaryPart set.")
+	end
+end)
